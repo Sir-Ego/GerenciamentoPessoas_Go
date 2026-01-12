@@ -1,9 +1,6 @@
 ## 🚀 Gestão de Pessoas: CRUD de Alta Performance em Go
 
-<p>
-  <img src="assets/img/mainscreen.jpg" alt="Tela principal" width="690" style="margin-right:20px;">
-  <video src="assets/video/demo.mp4" width="600" controls></video>
-</p>
+[![Demonstracao](assets/img/mainscreen.jpg)](assets/video/demo.mp4)
 
 
 ## 📌 Visão Geral do Projeto
