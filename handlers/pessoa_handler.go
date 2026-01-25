@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"CRUD_Go/models"
 	"CRUD_Go/services"
 	"bufio"
 	"fmt"
@@ -29,23 +30,71 @@ func CriarPessoaTerminal() {
 
 	menuStyle.Println("\n--------- CADASTRAR NOVA PESSOA ---------")
 
-	fmt.Print("Nome: ")
-	nome := lerEntrada()
+	var nome, cpf, dataNascimento, tel, email string
+	var err error
 
-	fmt.Print("CPF: ")
-	cpf := lerEntrada()
+	// Recebe e valida o Nome
+	for {
+		fmt.Print("Nome: ")
+		nome = lerEntrada()
+		err = models.ValidarNome(nome) // chama função individual
+		if err == nil {
+			break
+		}
+		errorStyle.Println("[ERRO]:", err)
+	}
 
-	fmt.Print("Data Nascimento: ")
-	dataNascimento := lerEntrada()
+	// Recebe e valida o CPF
+	for {
+		fmt.Print("CPF: ")
+		cpf = lerEntrada()
+		err = models.ValidarCpf(cpf)
+		if err == nil {
+			break
+		}
+		errorStyle.Println("[ERRO]:", err)
+	}
 
-	fmt.Print("Telefone: ")
-	tel := lerEntrada()
+	// Recebe e valida a Data de Nascimento
+	for {
+		fmt.Print("Data Nascimento: ")
+		dataNascimento = lerEntrada()
+		err = models.ValidarData(dataNascimento)
+		if err == nil {
+			break
+		}
+		errorStyle.Println("[ERRO]:", err)
+	}
 
-	fmt.Print("Email: ")
-	email := lerEntrada()
+	// Recebe e valida o Telefone
+	for {
+		fmt.Print("Telefone: ")
+		tel = lerEntrada()
+		err = models.ValidarTelefone(tel)
+		if err == nil {
+			break
+		}
+		errorStyle.Println("[ERRO]:", err)
+	}
+
+	// Recebe e valida o Email
+	for {
+		fmt.Print("Email: ")
+		email = lerEntrada()
+		err = models.ValidarEmail(email)
+		if err == nil {
+			break
+		}
+		errorStyle.Println("[ERRO]:", err)
+	}
 
 	// Chama o service enviando as strings capturadas
-	pessoa := services.CriarPessoaService(nome, cpf, dataNascimento, tel, email)
+	pessoa, err := services.CriarPessoaService(nome, cpf, dataNascimento, tel, email)
+
+	if err != nil {
+		errorStyle.Println("\n[ERRO DE VALIDAÇÃO]:", err)
+		return
+	}
 
 	fmt.Printf("\nSucesso! Pessoa cadastrada com ID: %s\n", pessoa.ID)
 }
@@ -101,19 +150,40 @@ func AtualizarPessoaTerminal() {
 
 	fmt.Println("Digite os novos dados:")
 
-	fmt.Print("Telefone: ")
-	tel := lerEntrada()
+	var tel, email string
+	var err error
 
-	fmt.Print("Email: ")
-	email := lerEntrada()
-
-	pessoa := services.AtualizarPessoaService(id, tel, email) // Chama o service para atualizar
-
-	if pessoa == nil {
-		errorStyle.Println("\nErro: Não foi possível atualizar. Verifique o ID.")
-	} else {
-		fmt.Println("\nDados atualizados com sucesso!", pessoa.Nome)
+	// Recebe e valida o Telefone
+	for {
+		fmt.Print("Telefone: ")
+		tel = lerEntrada()
+		err = models.ValidarTelefone(tel)
+		if err == nil {
+			break
+		}
+		errorStyle.Println("[ERRO]:", err)
 	}
+
+	// Recebe e valida o Email
+	for {
+		fmt.Print("Email: ")
+		email = lerEntrada()
+		err = models.ValidarEmail(email)
+		if err == nil {
+			break
+		}
+		errorStyle.Println("[ERRO]:", err)
+	}
+
+	// Chama o service para atualizar os dados
+	pessoa, err := services.AtualizarPessoaService(id, tel, email)
+
+	if err != nil {
+		errorStyle.Println("\n[ERRO DE VALIDAÇÃO]:", err)
+		return
+	}
+
+	fmt.Println("\nDados atualizados com sucesso!", pessoa.Nome)
 }
 
 // DeletarPessoaTerminal remove uma pessoa pelo ID

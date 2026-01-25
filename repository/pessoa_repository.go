@@ -63,7 +63,7 @@ func ObterPessoaPorID(id uuid.UUID) *models.Pessoa {
 func AtualizarPessoa(id uuid.UUID, telefone, email string) *models.Pessoa {
 	for i := range pessoas { // Percorre a lista de pessoas
 		if pessoas[i].ID == id {
-			pessoas[i].Telefone = telefone
+			pessoas[i].Telefone = telefone 
 			pessoas[i].Email = email
 
 			return &pessoas[i] // Retorna o ponteiro para a pessoa atualizada
